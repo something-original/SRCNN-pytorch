@@ -1,5 +1,5 @@
 import argparse
-
+import h5py
 import torch
 import torch.backends.cudnn as cudnn
 import numpy as np
@@ -32,11 +32,11 @@ if __name__ == '__main__':
 
     image = pil_image.open(args.image_file).convert('RGB')
 
-    image_width = (image.width // args.scale) * args.scale
-    image_height = (image.height // args.scale) * args.scale
+    image_width = image.width * args.scale
+    image_height = image.height * args.scale
     image = image.resize((image_width, image_height), resample=pil_image.BICUBIC)
-    image = image.resize((image.width // args.scale, image.height // args.scale), resample=pil_image.BICUBIC)
-    image = image.resize((image.width * args.scale, image.height * args.scale), resample=pil_image.BICUBIC)
+    #image = image.resize((image.width // args.scale, image.height // args.scale), resample=pil_image.BICUBIC)
+    #image = image.resize((image.width * args.scale, image.height * args.scale), resample=pil_image.BICUBIC)
     image.save(args.image_file.replace('.', '_bicubic_x{}.'.format(args.scale)))
 
     image = np.array(image).astype(np.float32)
